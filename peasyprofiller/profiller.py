@@ -16,7 +16,7 @@ class Profiller:
     
 
     def _stop_self(self) -> None:
-        self.total_times["Profiller"] = (time.time_ns() - self.last_time_calls["Profiller"]) / 1000000000.0
+        self.total_times["Profiller"] += (time.time_ns() - self.last_time_calls["Profiller"]) / 1000000000.0
 
 
     def start(self, context: str) -> None:

@@ -21,5 +21,5 @@ parser.add_argument("n", help="The fibonacci number you want to calculate", type
 parser.add_argument("save", help="The path to save the profilling data", type=str)
 args = parser.parse_args()
 
-print(fibonacci(args.n))
+fibonacci(args.n)
 pprof.save_csv(args.save)
