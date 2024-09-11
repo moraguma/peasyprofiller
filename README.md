@@ -13,7 +13,7 @@ pip install peasyprofiller
 
 To use it in a program, import it, call the start function at the start of the section you want to profile and stop at the end of that section. Time of sections with the same context will be added.
 
-To save the data collected, call the save_csv function with the desired save path.
+To save the data collected, call the save_csv function with the desired save path. You can also call the plot function to create a graph of the relative time spent in each section
 
 
 ```python
@@ -24,7 +24,8 @@ pprof.start("Name of my activity")
 # Some processing happens here
 
 pprof.stop("Name of my activity")
-pprof.save_csv("path_to_save.csv")
+pprof.save_csv("path/to/save")
+pprof.plot("path/to/save")
 ```
 
 ## Example
@@ -32,7 +33,7 @@ pprof.save_csv("path_to_save.csv")
 You can run the example at `peasyprofiller/tests/fibonacci.py` with the following command:
 
 ```
-python -m peasyprofiller.tests.fibonacci <N> <SAVE_PATH>.csv
+python -m peasyprofiller.tests.fibonacci <N> <SAVE_PATH>
 ```
 
 The generated CSV should look like this:

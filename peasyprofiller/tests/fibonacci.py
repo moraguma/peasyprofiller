@@ -23,3 +23,4 @@ args = parser.parse_args()
 
 fibonacci(args.n)
 pprof.save_csv(args.save)
+pprof.plot(args.save)
