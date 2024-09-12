@@ -13,7 +13,7 @@ pip install peasyprofiller
 
 To use it in a program, import it, call the start function at the start of the section you want to profile and stop at the end of that section. Time of sections with the same context will be added.
 
-To save the data collected, call the save_csv function with the desired save path. You can also call the plot function to create a graph of the relative time spent in each section
+To save the data collected, call the save_csv function with the desired save path. You can also call the plot function to create a graph of the relative time spent in each section (this assumes that all tracked sections are disjointed in time)
 
 
 ```python

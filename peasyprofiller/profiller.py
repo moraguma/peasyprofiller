@@ -1,6 +1,7 @@
 import time
 import csv
 import matplotlib.pyplot as plt
+import numpy as np
 
 class Profiller:
     _instance = None
@@ -26,24 +27,19 @@ class Profiller:
 
 
     def start(self, context: str) -> None:
-        self._start_self()
         self.last_time_calls[context] = time.time_ns()
-        self._stop_self()
     
 
     def stop(self, context: str) -> None:
-        self._start_self()
         if not context in self.last_time_calls:
             if self.verbose:
                 print(f"Profiller: Called stop() on context {context} without calling start() first")
-            self._stop_self()
             return
 
         if not context in self.total_times:
             self.total_times[context] = 0
         
         self.total_times[context] += (time.time_ns() - self.last_time_calls[context]) / 1000000000.0
-        self._stop_self()
 
 
     def save_csv(self, path: str):
@@ -58,23 +54,31 @@ class Profiller:
         self._stop_self()
     
 
-    def plot(self, path: str, excludes: list=[]):
+    def plot(self, path: str):
         self._start_self()
         self._update_total_time()
 
-        for context in excludes:
-            self.total_times["Total time"] -= self.total_times[context]
-
         percentages = {}
+        time_remaining = 100
         for context in self.total_times:
-            if context != "Total time" and not context in excludes:
+            if context != "Total time":
                 percentages[context] = self.total_times[context] / self.total_times["Total time"] * 100
+                time_remaining -= percentages[context]
+        if time_remaining > 0:
+            percentages["Untracked time"] = time_remaining
 
-        fig = plt.figure()
-        plt.bar(percentages.keys(), percentages.values())
-        plt.xlabel("Contexts")
+        width = 0.5
+        species = ("Program")
+        fig, ax = plt.subplots()
+        bottom = np.zeros(3)
+        for boolean, percentage in percentages.items():
+            p = ax.bar(species, percentage, width, label=boolean, bottom=bottom)
+            bottom += percentage
+        
+        ax.set_title("Profile")
+        ax.legend(loc="upper right")
         plt.ylabel("Relative time spent (%)")
-        plt.title("Profile")
+
         plt.savefig(path + str(".png"))
 
         self._stop_self()
