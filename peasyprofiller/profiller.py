@@ -1,4 +1,5 @@
 import time
+import datetime
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
@@ -82,6 +83,19 @@ class Profiller:
         plt.savefig(path + str(".png"))
 
         self._stop_self()
+
+    
+    def get_etr(self, done: int, out_of: int) -> str:
+        """Given [done]/[out_of] actions performed, returns the estimated remaining time"""
+        if done == 0:
+            return "N/A"
+        return str(datetime.timedelta(seconds=(time.time() - self.start_time / 1000000000) / done * (out_of - done)))
+
+
+    def get_et(self) -> str:
+        """Returns elapsed time"""
+        return str(datetime.timedelta(seconds=time.time() - self.start_time / 1000000000))
+
 
 
 profiller = Profiller()
